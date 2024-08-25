@@ -28,10 +28,14 @@ func ReadFile(fileName string) [][]string {
 	return records
 }
 
-func WriteDataToFile(fileName string, tasks []types.Task) {
-	file, err := os.OpenFile(fileName, os.O_RDWR, 0644)
+func WriteDataToFile(fileName string, tasks []types.Task, new bool) {
+	var access int = os.O_WRONLY
+	if new {
+		access = os.O_APPEND
+	}
+	file, err := os.OpenFile(fileName, access, 0666)
 	if err != nil {
-		fmt.Println("Error: ", err)
+		fmt.Println("Error opening file: ", err)
 		return
 	}
 
