@@ -31,11 +31,10 @@ func GetAllTasks() []types.Task {
 	tasks := make([]types.Task, len(records))
 
 	for i, record := range records {
-		task := strings.Split(record[0], ";")
-		done, _ := strconv.ParseBool(task[2])
+		done, _ := strconv.ParseBool(record[2])
 		tasks[i] = types.Task{
-			Name:    task[0],
-			DueDate: task[1],
+			Name:    record[0],
+			DueDate: record[1],
 			Done:    done,
 		}
 	}
