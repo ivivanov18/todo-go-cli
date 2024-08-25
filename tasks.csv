@@ -1,5 +1,5 @@
-check todo;tomorrow;done
-check todo;tomorrow;done
-check todo;tomorrow;done
-check todo;tomorrow;done
-check todo;tomorrow;done
+check todo;tomorrow;true
+check todo;tomorrow;true
+check todo;tomorrow;false
+check todo;tomorrow;true
+check todo;tomorrow;false
