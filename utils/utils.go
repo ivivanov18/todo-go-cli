@@ -33,6 +33,7 @@ func WriteDataToFile(fileName string, tasks []types.Task, new bool) {
 	if new {
 		access = os.O_APPEND
 	}
+	//FIXME: does not work if file does not exist
 	file, err := os.OpenFile(fileName, access, 0666)
 	if err != nil {
 		fmt.Println("Error opening file: ", err)
@@ -46,7 +47,12 @@ func WriteDataToFile(fileName string, tasks []types.Task, new bool) {
 
 	records := make([][]string, len(tasks))
 	for i, task := range tasks {
-		records[i] = []string{task.Name, task.DueDate, fmt.Sprintf("%t", task.Done)}
+		records[i] = []string{
+			fmt.Sprintf("%d", task.Id),
+			task.Name,
+			fmt.Sprintf("%s", task.Created),
+			fmt.Sprintf("%t", task.Done),
+		}
 		if err := writer.Write(records[i]); err != nil {
 			fmt.Println("Error: ", err)
 		}
