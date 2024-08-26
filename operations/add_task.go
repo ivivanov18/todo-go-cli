@@ -10,7 +10,7 @@ import (
 func AddTask(name string) {
 	task := types.Task{
 		Name:    name,
-		Created: time.Now(),
+		Created: time.Now().String(),
 		Done:    false,
 		Id:      getNewId(),
 	}

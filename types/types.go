@@ -1,11 +1,9 @@
 package types
 
-import "time"
-
 type Task struct {
 	Id      int
 	Name    string
-	Created time.Time
+	Created string
 	Done    bool
 }
 
