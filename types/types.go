@@ -1,8 +1,9 @@
 package types
 
 type Task struct {
+	Id      int
 	Name    string
-	DueDate string
+	Created string
 	Done    bool
 }
 

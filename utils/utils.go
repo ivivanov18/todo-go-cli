@@ -10,8 +10,11 @@ import (
 )
 
 func ReadFile(fileName string) [][]string {
-	file, err := os.Open(fileName)
+	if !fileExists(fileName) {
+		return nil
+	}
 
+	file, err := os.Open(fileName)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -28,12 +31,21 @@ func ReadFile(fileName string) [][]string {
 	return records
 }
 
-func WriteDataToFile(fileName string, tasks []types.Task, new bool) {
-	var access int = os.O_WRONLY
-	if new {
-		access = os.O_APPEND
+func WriteDataToFile(fileName string, tasks []types.Task) {
+	var file *os.File
+	var err error
+
+	for _, task := range tasks {
+		fmt.Println(task)
 	}
-	file, err := os.OpenFile(fileName, access, 0666)
+
+	// Add line
+	if len(tasks) == 1 {
+		file, err = os.OpenFile(fileName, os.O_APPEND|os.O_CREATE, 0644)
+	} else {
+		file, err = os.OpenFile(fileName, os.O_CREATE|os.O_TRUNC, 0644)
+	}
+
 	if err != nil {
 		fmt.Println("Error opening file: ", err)
 		return
@@ -46,7 +58,12 @@ func WriteDataToFile(fileName string, tasks []types.Task, new bool) {
 
 	records := make([][]string, len(tasks))
 	for i, task := range tasks {
-		records[i] = []string{task.Name, task.DueDate, fmt.Sprintf("%t", task.Done)}
+		records[i] = []string{
+			fmt.Sprintf("%d", task.Id),
+			task.Name,
+			fmt.Sprintf("%s", task.Created),
+			fmt.Sprintf("%t", task.Done),
+		}
 		if err := writer.Write(records[i]); err != nil {
 			fmt.Println("Error: ", err)
 		}
@@ -55,4 +72,19 @@ func WriteDataToFile(fileName string, tasks []types.Task, new bool) {
 	if err := writer.Error(); err != nil {
 		fmt.Println("Error: ", err)
 	}
+}
+
+func fileExists(fileName string) bool {
+	_, err := os.Stat(fileName)
+	if err == nil {
+		// File exists
+		return true
+	}
+	if os.IsNotExist(err) {
+		// File does not exist
+		return false
+	}
+	// Some other error occurred
+	fmt.Println("Error checking file:", err)
+	return false
 }
