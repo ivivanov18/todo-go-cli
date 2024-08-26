@@ -28,13 +28,12 @@ func ReadFile(fileName string) [][]string {
 	return records
 }
 
-func WriteDataToFile(fileName string, tasks []types.Task, new bool) {
-	var access int = os.O_WRONLY
-	if new {
-		access = os.O_APPEND
+func WriteDataToFile(fileName string, tasks []types.Task) {
+	for _, task := range tasks {
+		fmt.Println(task)
 	}
-	//FIXME: does not work if file does not exist
-	file, err := os.OpenFile(fileName, access, 0666)
+
+	file, err := os.Create(fileName)
 	if err != nil {
 		fmt.Println("Error opening file: ", err)
 		return

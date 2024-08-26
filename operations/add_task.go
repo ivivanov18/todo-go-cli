@@ -16,7 +16,7 @@ func AddTask(name string) {
 	}
 	tasks := make([]types.Task, 1)
 	tasks[0] = task
-	utils.WriteDataToFile(types.TASKS_FILENAME, tasks, true)
+	utils.WriteDataToFile(types.TASKS_FILENAME, tasks)
 }
 
 // TODO: logic is not good - if task is deleted & removed from the list, ids for newer
