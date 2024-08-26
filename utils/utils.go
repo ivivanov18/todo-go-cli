@@ -10,8 +10,11 @@ import (
 )
 
 func ReadFile(fileName string) [][]string {
-	file, err := os.Open(fileName)
+	if !fileExists(fileName) {
+		return nil
+	}
 
+	file, err := os.Open(fileName)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -29,11 +32,20 @@ func ReadFile(fileName string) [][]string {
 }
 
 func WriteDataToFile(fileName string, tasks []types.Task) {
+	var file *os.File
+	var err error
+
 	for _, task := range tasks {
 		fmt.Println(task)
 	}
 
-	file, err := os.Create(fileName)
+	// Add line
+	if len(tasks) == 1 {
+		file, err = os.OpenFile(fileName, os.O_APPEND|os.O_CREATE, 0644)
+	} else {
+		file, err = os.OpenFile(fileName, os.O_CREATE|os.O_TRUNC, 0644)
+	}
+
 	if err != nil {
 		fmt.Println("Error opening file: ", err)
 		return
@@ -60,4 +72,19 @@ func WriteDataToFile(fileName string, tasks []types.Task) {
 	if err := writer.Error(); err != nil {
 		fmt.Println("Error: ", err)
 	}
+}
+
+func fileExists(fileName string) bool {
+	_, err := os.Stat(fileName)
+	if err == nil {
+		// File exists
+		return true
+	}
+	if os.IsNotExist(err) {
+		// File does not exist
+		return false
+	}
+	// Some other error occurred
+	fmt.Println("Error checking file:", err)
+	return false
 }
