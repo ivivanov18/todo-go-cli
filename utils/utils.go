@@ -35,10 +35,6 @@ func WriteDataToFile(fileName string, tasks []types.Task) {
 	var file *os.File
 	var err error
 
-	for _, task := range tasks {
-		fmt.Println(task)
-	}
-
 	// Add line
 	if len(tasks) == 1 {
 		file, err = os.OpenFile(fileName, os.O_APPEND|os.O_CREATE, 0644)
