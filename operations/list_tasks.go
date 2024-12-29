@@ -2,7 +2,9 @@ package operations
 
 import (
 	"fmt"
+	"os"
 	"strconv"
+	"text/tabwriter"
 
 	"github.com/ivivanov18/todo-go-cli/types"
 	"github.com/ivivanov18/todo-go-cli/utils"
@@ -11,9 +13,13 @@ import (
 func DisplayTasks() {
 	tasks := GetAllTasks()
 
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 0, '.', tabwriter.Debug)
+
+	fmt.Fprintln(w, "ID\tName\tCreated\tDone\t")
 	for _, task := range tasks {
-		fmt.Printf("%d - %s | %s | %v\n", task.Id, task.Name, task.Created, task.Done)
+		fmt.Fprintln(w, task.Id, "\t", task.Name, "\t", task.Created, "\t", task.Done, "\t")
 	}
+	w.Flush()
 }
 
 func GetAllTasks() []types.Task {
