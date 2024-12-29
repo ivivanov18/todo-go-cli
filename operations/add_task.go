@@ -21,6 +21,10 @@ func AddTask(name string) {
 
 func getNewId() int {
 	tasks := GetAllTasks()
+	if len(tasks) == 0 {
+		return 1
+	}
+
 	lastTask := tasks[len(tasks)-1]
 	return lastTask.Id + 1
 }
