@@ -19,9 +19,8 @@ func AddTask(name string) {
 	utils.WriteDataToFile(types.TASKS_FILENAME, tasks)
 }
 
-// TODO: logic is not good - if task is deleted & removed from the list, ids for newer
-// will be smaller than older tasks
 func getNewId() int {
 	tasks := GetAllTasks()
-	return len(tasks) + 1
+	lastTask := tasks[len(tasks)-1]
+	return lastTask.Id + 1
 }
