@@ -1,6 +1,7 @@
 package operations
 
 import (
+	"fmt"
 	"slices"
 
 	"github.com/ivivanov18/todo-go-cli/types"
@@ -14,11 +15,20 @@ func filterTask(id int) []types.Task {
 		return task.Id == id
 	})
 
-	return remainingTasks
+	if len(remainingTasks) == len(tasks) {
+		return nil
+	} else {
+		return remainingTasks
+	}
 }
 
 func DeleteTask(id int) {
 	tasks := filterTask(id)
 
-	utils.WriteDataToFile(types.TASKS_FILENAME, tasks)
+	if tasks == nil {
+		fmt.Printf("Task with id %d not found.\n", id)
+		return
+	} else {
+		utils.WriteDataToFile(types.TASKS_FILENAME, tasks)
+	}
 }

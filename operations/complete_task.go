@@ -1,6 +1,7 @@
 package operations
 
 import (
+	"fmt"
 	"slices"
 
 	"github.com/ivivanov18/todo-go-cli/types"
@@ -15,5 +16,7 @@ func CompleteTask(id int) {
 	if taskIdx != -1 {
 		tasks[taskIdx].Done = true
 		utils.WriteDataToFile(types.TASKS_FILENAME, tasks)
+	} else {
+		fmt.Printf("Task with id %d not found.\n", id)
 	}
 }

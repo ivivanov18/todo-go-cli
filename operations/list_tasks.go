@@ -19,7 +19,7 @@ func DisplayTasks() {
 
 	fmt.Fprintln(w, "ID\tName\tCreated\tDone\t")
 	for _, task := range tasks {
-		fmt.Fprintln(w, task.Id, "\t", task.Name, "\t", task.Created, "\t", task.Done, "\t")
+		fmt.Fprintln(w, task.Id, "\t", task.Name, "\t", dateToHumanReadableFormat(task.Created), "\t", task.Done, "\t")
 	}
 	w.Flush()
 }
@@ -34,7 +34,7 @@ func GetAllTasks() []types.Task {
 		tasks[i] = types.Task{
 			Id:      id,
 			Name:    record[1],
-			Created: dateToHumanReadableFormat(record[2]),
+			Created: record[2],
 			Done:    done,
 		}
 	}
